@@ -202,10 +202,11 @@ function mesAno() { const d = new Date(); return MESES[d.getMonth()] + '/' + d.g
 function setStatus(msg, tipo) { const el = document.getElementById('status'); el.textContent = msg; el.className = 'status '+(tipo||''); }
 function extrairId(url) { const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/); return m ? m[1] : null; }
 
-// Usa a Google Visualization API (gviz/tq) — sem bloqueio CORS para planilhas públicas
-// Busca por nome de aba diretamente, sem precisar dos GIDs
+// Usa proxy allorigins para contornar CORS
+// O proxy faz a requisição server-side e devolve sem restrição de origem
 function gvizURL(id, nomeDaAba) {
-  return `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(nomeDaAba)}`;
+  const googleUrl = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(nomeDaAba)}`;
+  return `https://api.allorigins.win/raw?url=${encodeURIComponent(googleUrl)}`;
 }
 
 function parseCSV(text) {
