@@ -19,12 +19,14 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .btn { padding: 10px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
 .btn-primary { background: #674EA7; color: #fff; }
 .btn-outline { background: #fff; color: #674EA7; border: 1.5px solid #674EA7; }
+.btn-pdf { background: #2e7d32; color: #fff; }
 .btn:hover { opacity: 0.85; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .status { font-size: 13px; color: #888; margin-top: 10px; min-height: 18px; }
 .status.ok { color: #2e7d32; font-weight: 600; }
 .status.err { color: #c62828; }
-.actions { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; }
-.actions-info { font-size: 13px; color: #555; flex: 1; }
+.actions { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.actions-info { font-size: 13px; color: #555; flex: 1; min-width: 200px; }
 #preview-wrap { display: none; }
 #preview-wrap.visible { display: block; }
 #relatorio { background: #fff; font-family: 'Georgia','Times New Roman',serif; color: #1a1a1a; border: 0.5px solid #ddd; border-radius: 8px; overflow: hidden; }
@@ -96,7 +98,8 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
   <div id="preview-wrap">
     <div class="actions">
       <span class="actions-info" id="actions-info"></span>
-      <button class="btn btn-outline" onclick="window.print()">Imprimir / Salvar PDF</button>
+      <button class="btn btn-outline" onclick="window.print()">Preview / Imprimir</button>
+      <button class="btn btn-pdf" id="btn-pdf" onclick="baixarPDF()">⬇ Baixar PDF oficial</button>
     </div>
     <div id="relatorio">
       <div class="capa">
@@ -193,12 +196,14 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 </div>
 
 <script>
-const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwEscnN4HxY3Apgywkd_5fLtXFGihxgSfJBq6LDra3BC6VLxuFYAMwnkbxn9fG8te1r/exec';
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzg2JtWQUefuljGXKHImK2PdXvfdyW1tQFQRl2leHpUT9lWTEETAYdhwC6M4cRXVG7k/exec';
 
 const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 function mesAno() { const d = new Date(); return MESES[d.getMonth()] + '/' + d.getFullYear(); }
 function setStatus(msg, tipo) { const el = document.getElementById('status'); el.textContent = msg; el.className = 'status '+(tipo||''); }
 function extrairId(url) { const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/); return m ? m[1] : null; }
+
+let sheetIdAtual = '';
 
 async function carregar() {
   const url = document.getElementById('sheet-url').value.trim();
@@ -207,11 +212,11 @@ async function carregar() {
 
   setStatus('Carregando dados...', '');
   try {
-    const resp = await fetch(`${BACKEND_URL}?id=${id}`);
+    const resp = await fetch(`${BACKEND_URL}?id=${id}&acao=dados`);
     const dados = await resp.json();
-
     if (dados.erro) throw new Error(dados.erro);
 
+    sheetIdAtual = id;
     const { nomeCrianca, nomeCuidador, horasTotais, objetivos } = dados;
 
     document.getElementById('capa-nome').textContent = nomeCrianca || '—';
@@ -249,6 +254,36 @@ async function carregar() {
 
   } catch(e) {
     setStatus('Erro: ' + e.message, 'err');
+  }
+}
+
+async function baixarPDF() {
+  if (!sheetIdAtual) { setStatus('Carregue uma planilha primeiro.', 'err'); return; }
+  const btn = document.getElementById('btn-pdf');
+  btn.textContent = 'Gerando PDF...';
+  btn.disabled = true;
+
+  try {
+    const resp = await fetch(`${BACKEND_URL}?id=${sheetIdAtual}&acao=pdf`);
+    if (!resp.ok) throw new Error('Erro ao gerar PDF.');
+    const base64 = await resp.text();
+
+    // Converter base64 para blob e baixar
+    const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+    const blob  = new Blob([bytes], { type: 'application/pdf' });
+    const url   = URL.createObjectURL(blob);
+    const a     = document.createElement('a');
+    const nome  = document.getElementById('capa-nome').textContent || 'relatorio';
+    a.href      = url;
+    a.download  = `PEI_Inicial_${nome}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+  } catch(e) {
+    setStatus('Erro ao gerar PDF: ' + e.message, 'err');
+  } finally {
+    btn.textContent = '⬇ Baixar PDF oficial';
+    btn.disabled = false;
   }
 }
 
