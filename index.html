@@ -12,14 +12,19 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .logo-badge { background: #674EA7; color: #fff; font-weight: 700; font-size: 13px; padding: 5px 12px; border-radius: 6px; letter-spacing: 0.5px; }
 .logo-sub { font-size: 14px; color: #666; }
 .card { background: #fff; border: 0.5px solid #ddd; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; }
-.card h2 { font-size: 12px; font-weight: 700; color: #888; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.8px; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.card-header h2 { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; }
 .input-row { display: flex; gap: 8px; }
 .input-row input { flex: 1; padding: 10px 14px; border: 0.5px solid #ccc; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; }
 .input-row input:focus { border-color: #674EA7; box-shadow: 0 0 0 3px rgba(103,78,167,0.1); }
-.btn { padding: 10px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
+.btn { padding: 10px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: opacity 0.15s; white-space: nowrap; }
 .btn-primary { background: #674EA7; color: #fff; }
 .btn-outline { background: #fff; color: #674EA7; border: 1.5px solid #674EA7; }
 .btn-pdf { background: #2e7d32; color: #fff; }
+.btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 6px; }
+.btn-all { background: #674EA7; color: #fff; padding: 7px 16px; font-size: 12px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-family: inherit; }
+.btn-all:hover { opacity: 0.85; }
+.btn-all:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn:hover { opacity: 0.85; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .status { font-size: 13px; color: #888; margin-top: 10px; min-height: 18px; }
@@ -29,6 +34,18 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .actions-info { font-size: 13px; color: #555; flex: 1; min-width: 200px; }
 #preview-wrap { display: none; }
 #preview-wrap.visible { display: block; }
+
+/* LISTA DE PDFs */
+.pdf-lista { list-style: none; }
+.pdf-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid #eee; }
+.pdf-item:last-child { border-bottom: none; }
+.pdf-icon { font-size: 20px; flex-shrink: 0; }
+.pdf-info { flex: 1; min-width: 0; }
+.pdf-nome { font-size: 13.5px; font-weight: 600; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pdf-data { font-size: 11px; color: #999; margin-top: 2px; }
+.pdf-vazio { font-size: 13px; color: #bbb; text-align: center; padding: 1.5rem 0; }
+
+/* RELATÓRIO */
 #relatorio { background: #fff; font-family: 'Georgia','Times New Roman',serif; color: #1a1a1a; border: 0.5px solid #ddd; border-radius: 8px; overflow: hidden; }
 .capa { background: #674EA7; color: #fff; padding: 3rem 3rem 2.5rem; position: relative; min-height: 200px; }
 .capa-numero { font-family: 'Segoe UI',Arial,sans-serif; font-size: 96px; font-weight: 700; opacity: 0.12; position: absolute; top: 1rem; right: 2rem; line-height: 1; }
@@ -75,7 +92,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .rodape { background: #f7f5ff; border-top: 2px solid #674EA7; padding: 1.25rem 3rem; text-align: center; font-family: 'Segoe UI',Arial,sans-serif; font-size: 11px; color: #888; line-height: 1.7; }
 @media print {
   body { background: #fff; }
-  .interface > .card, .actions { display: none !important; }
+  .interface > .card, .actions, #card-lista { display: none !important; }
   #relatorio { border: none; border-radius: 0; }
 }
 </style>
@@ -86,8 +103,10 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
     <span class="logo-badge">GENIAL CARE</span>
     <span class="logo-sub">Gerador de Relatório — PEI Inicial</span>
   </div>
+
+  <!-- Input planilha -->
   <div class="card">
-    <h2>Link da planilha</h2>
+    <div class="card-header"><h2>Link da planilha</h2></div>
     <div class="input-row">
       <input type="text" id="sheet-url" placeholder="https://docs.google.com/spreadsheets/d/..." />
       <button class="btn btn-primary" onclick="carregar()">Carregar</button>
@@ -95,6 +114,18 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
     <p class="status" id="status">Cole o link do Google Sheets e clique em Carregar.</p>
   </div>
 
+  <!-- Lista de PDFs gerados -->
+  <div class="card" id="card-lista">
+    <div class="card-header">
+      <h2>PDFs gerados</h2>
+      <button class="btn-all" id="btn-all" onclick="baixarTodos()">⬇ Baixar todos</button>
+    </div>
+    <ul class="pdf-lista" id="pdf-lista">
+      <li class="pdf-vazio" id="pdf-vazio">Nenhum PDF gerado ainda.</li>
+    </ul>
+  </div>
+
+  <!-- Preview -->
   <div id="preview-wrap">
     <div class="actions">
       <span class="actions-info" id="actions-info"></span>
@@ -197,14 +228,89 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 
 <script>
 const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyCq3zLCYDTuM8hSIhDigDuzRSfXwQTuvpueq8OU2R8vRpd7gOjRFTQ2bF9RlL-pqwTRw/exec';
+const STORAGE_KEY = 'genial_pdfs_v1';
 
 const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 function mesAno() { const d = new Date(); return MESES[d.getMonth()] + '/' + d.getFullYear(); }
+function dataHora() {
+  const d = new Date();
+  return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
 function setStatus(msg, tipo) { const el = document.getElementById('status'); el.textContent = msg; el.className = 'status '+(tipo||''); }
 function extrairId(url) { const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/); return m ? m[1] : null; }
+function nomeArquivo(nome) { return `PEI_${nome.replace(/\s+/g,'_')}_SerEspecial`; }
 
 let sheetIdAtual = '';
+let nomeAtual = '';
 
+// ── Persistência de PDFs ──────────────────────────────────────
+function carregarLista() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+function salvarLista(lista) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+}
+function adicionarPDFnaLista(nome, base64) {
+  const lista = carregarLista();
+  // Evitar duplicatas — substitui se mesmo nome
+  const idx = lista.findIndex(p => p.nome === nome);
+  const item = { nome, base64, data: dataHora() };
+  if (idx >= 0) lista[idx] = item; else lista.unshift(item);
+  salvarLista(lista);
+  renderizarLista();
+}
+function renderizarLista() {
+  const lista = carregarLista();
+  const ul = document.getElementById('pdf-lista');
+  const vazio = document.getElementById('pdf-vazio');
+  if (!lista.length) {
+    ul.innerHTML = '<li class="pdf-vazio" id="pdf-vazio">Nenhum PDF gerado ainda.</li>';
+    return;
+  }
+  ul.innerHTML = lista.map((p, i) => `
+    <li class="pdf-item">
+      <span class="pdf-icon">📄</span>
+      <div class="pdf-info">
+        <div class="pdf-nome">${p.nome}.pdf</div>
+        <div class="pdf-data">${p.data}</div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="baixarDaLista(${i})">⬇ Baixar</button>
+    </li>
+  `).join('');
+}
+function baixarDaLista(idx) {
+  const lista = carregarLista();
+  const p = lista[idx];
+  if (!p) return;
+  dispararDownload(p.base64, p.nome);
+}
+function dispararDownload(base64, nome) {
+  const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+  const blob  = new Blob([bytes], { type: 'application/pdf' });
+  const url   = URL.createObjectURL(blob);
+  const a     = document.createElement('a');
+  a.href      = url;
+  a.download  = nome + '.pdf';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function baixarTodos() {
+  const lista = carregarLista();
+  if (!lista.length) return;
+  const btn = document.getElementById('btn-all');
+  btn.disabled = true;
+  btn.textContent = 'Baixando...';
+  for (let i = 0; i < lista.length; i++) {
+    dispararDownload(lista[i].base64, lista[i].nome);
+    // Pequena pausa entre downloads para não bloquear o navegador
+    await new Promise(r => setTimeout(r, 800));
+  }
+  btn.disabled = false;
+  btn.textContent = '⬇ Baixar todos';
+}
+
+// ── Carregar planilha ─────────────────────────────────────────
 async function carregar() {
   const url = document.getElementById('sheet-url').value.trim();
   const id = extrairId(url);
@@ -217,6 +323,7 @@ async function carregar() {
     if (dados.erro) throw new Error(dados.erro);
 
     sheetIdAtual = id;
+    nomeAtual = dados.nomeCrianca || 'Crianca';
     const { nomeCrianca, nomeCuidador, horasTotais, objetivos } = dados;
 
     document.getElementById('capa-nome').textContent = nomeCrianca || '—';
@@ -257,6 +364,7 @@ async function carregar() {
   }
 }
 
+// ── Gerar e baixar PDF ────────────────────────────────────────
 async function baixarPDF() {
   if (!sheetIdAtual) { setStatus('Carregue uma planilha primeiro.', 'err'); return; }
   const btn = document.getElementById('btn-pdf');
@@ -267,17 +375,13 @@ async function baixarPDF() {
     const resp = await fetch(`${BACKEND_URL}?id=${sheetIdAtual}&acao=pdf`);
     if (!resp.ok) throw new Error('Erro ao gerar PDF.');
     const base64 = await resp.text();
+    const nome   = nomeArquivo(nomeAtual);
 
-    // Converter base64 para blob e baixar
-    const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-    const blob  = new Blob([bytes], { type: 'application/pdf' });
-    const url   = URL.createObjectURL(blob);
-    const a     = document.createElement('a');
-    const nome  = document.getElementById('capa-nome').textContent || 'relatorio';
-    a.href      = url;
-    a.download  = `PEI_Inicial_${nome}.pdf`;
-    a.click();
-    URL.revokeObjectURL(url);
+    // Salvar na lista persistente
+    adicionarPDFnaLista(nome, base64);
+
+    // Disparar download
+    dispararDownload(base64, nome);
 
   } catch(e) {
     setStatus('Erro ao gerar PDF: ' + e.message, 'err');
@@ -287,7 +391,9 @@ async function baixarPDF() {
   }
 }
 
+// Init
 document.addEventListener('DOMContentLoaded', () => {
+  renderizarLista();
   document.getElementById('sheet-url').addEventListener('keydown', e => {
     if (e.key === 'Enter') carregar();
   });
