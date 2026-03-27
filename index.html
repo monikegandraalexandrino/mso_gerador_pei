@@ -7,7 +7,6 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #1a1a1a; }
-
 .interface { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem; }
 .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
 .logo-badge { background: #674EA7; color: #fff; font-weight: 700; font-size: 13px; padding: 5px 12px; border-radius: 6px; letter-spacing: 0.5px; }
@@ -30,51 +29,50 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 #preview-wrap.visible { display: block; }
 
 /* RELATÓRIO */
-#relatorio { background: #fff; font-family: 'Georgia', 'Times New Roman', serif; color: #1a1a1a; border: 0.5px solid #ddd; border-radius: 8px; overflow: hidden; }
+#relatorio { background: #fff; font-family: 'Georgia','Times New Roman',serif; color: #1a1a1a; border: 0.5px solid #ddd; border-radius: 8px; overflow: hidden; }
 .capa { background: #674EA7; color: #fff; padding: 3rem 3rem 2.5rem; position: relative; min-height: 200px; }
-.capa-numero { font-family: 'Segoe UI', Arial, sans-serif; font-size: 96px; font-weight: 700; opacity: 0.12; position: absolute; top: 1rem; right: 2rem; line-height: 1; }
-.capa-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.75; margin-bottom: 0.2rem; }
-.capa-titulo { font-family: 'Segoe UI', Arial, sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 2.5rem; }
-.capa-nome { font-family: 'Segoe UI', Arial, sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 0.3rem; }
-.capa-mes { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; opacity: 0.7; }
+.capa-numero { font-family: 'Segoe UI',Arial,sans-serif; font-size: 96px; font-weight: 700; opacity: 0.12; position: absolute; top: 1rem; right: 2rem; line-height: 1; }
+.capa-label { font-family: 'Segoe UI',Arial,sans-serif; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.75; margin-bottom: 0.2rem; }
+.capa-titulo { font-family: 'Segoe UI',Arial,sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 2.5rem; }
+.capa-nome { font-family: 'Segoe UI',Arial,sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 0.3rem; }
+.capa-mes { font-family: 'Segoe UI',Arial,sans-serif; font-size: 13px; opacity: 0.7; }
 .corpo { padding: 2.5rem 3rem; }
 .secao { margin-bottom: 2.5rem; }
-.secao-titulo-principal { font-family: 'Segoe UI', Arial, sans-serif; font-size: 19px; font-weight: 700; color: #1a1a1a; margin-bottom: 1rem; line-height: 1.4; }
+.secao-titulo-principal { font-family: 'Segoe UI',Arial,sans-serif; font-size: 19px; font-weight: 700; color: #1a1a1a; margin-bottom: 1rem; line-height: 1.4; }
 .secao-titulo-principal em { color: #674EA7; font-style: normal; }
-.dado-linha { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13.5px; margin-bottom: 0.4rem; color: #333; }
+.dado-linha { font-family: 'Segoe UI',Arial,sans-serif; font-size: 13.5px; margin-bottom: 0.4rem; color: #333; }
 .dado-linha strong { color: #1a1a1a; }
-.secao-titulo { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 1rem; }
+.secao-titulo { font-family: 'Segoe UI',Arial,sans-serif; font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 1rem; }
 .processo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1rem 0 1.5rem; }
 .processo-card { background: #f7f5ff; border: 0.5px solid #d5cdf0; border-radius: 8px; padding: 1rem 1.25rem; }
 .processo-card .picon { font-size: 20px; margin-bottom: 0.5rem; display: block; }
-.processo-card strong { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12.5px; font-weight: 700; color: #674EA7; display: block; margin-bottom: 0.35rem; }
-.processo-card p { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; color: #555; line-height: 1.5; margin: 0; }
+.processo-card strong { font-family: 'Segoe UI',Arial,sans-serif; font-size: 12.5px; font-weight: 700; color: #674EA7; display: block; margin-bottom: 0.35rem; }
+.processo-card p { font-family: 'Segoe UI',Arial,sans-serif; font-size: 12px; color: #555; line-height: 1.5; margin: 0; }
 .texto-corpo { font-size: 13.5px; line-height: 1.75; color: #333; margin-bottom: 0.85rem; }
 .texto-corpo strong { color: #1a1a1a; }
 .lista-areas { padding-left: 1.25rem; margin-bottom: 0.85rem; }
 .lista-areas li { font-size: 13px; line-height: 1.75; color: #333; margin-bottom: 0.1rem; }
-.secao-bold { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: 700; color: #1a1a1a; margin: 1.5rem 0 0.5rem; }
+.secao-bold { font-family: 'Segoe UI',Arial,sans-serif; font-size: 14px; font-weight: 700; color: #1a1a1a; margin: 1.5rem 0 0.5rem; }
 .tabela-obj { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 0.75rem; }
-.tabela-obj th { background: #674EA7; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 700; padding: 9px 14px; text-align: center; text-transform: uppercase; letter-spacing: 0.8px; }
+.tabela-obj th { background: #674EA7; color: #fff; font-family: 'Segoe UI',Arial,sans-serif; font-size: 11px; font-weight: 700; padding: 9px 14px; text-align: center; text-transform: uppercase; letter-spacing: 0.8px; }
 .tabela-obj td { padding: 9px 14px; border-bottom: 0.5px solid #eee; vertical-align: top; line-height: 1.6; }
-.tabela-obj .td-dom { font-family: 'Segoe UI', Arial, sans-serif; font-weight: 700; color: #674EA7; font-size: 11.5px; text-align: center; }
-.tabela-obj .td-sub { font-family: 'Segoe UI', Arial, sans-serif; font-weight: 700; color: #333; font-size: 11.5px; text-align: center; }
+.tabela-obj .td-dom { font-family: 'Segoe UI',Arial,sans-serif; font-weight: 700; color: #674EA7; font-size: 11.5px; text-align: center; }
+.tabela-obj .td-sub { font-family: 'Segoe UI',Arial,sans-serif; font-weight: 700; color: #333; font-size: 11.5px; text-align: center; }
 .tabela-obj .td-ob { color: #222; font-size: 12.5px; }
 .tabela-obj tr:nth-child(even) td { background: #faf9ff; }
 .tabela-carga-topo { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 10px; }
-.tabela-carga-topo td { padding: 10px 14px; border: 0.5px solid #ddd; font-family: 'Segoe UI', Arial, sans-serif; }
+.tabela-carga-topo td { padding: 10px 14px; border: 0.5px solid #ddd; font-family: 'Segoe UI',Arial,sans-serif; }
 .tc-label { font-weight: 600; color: #555; font-size: 12px; }
 .tc-valor { font-weight: 700; color: #674EA7; font-size: 16px; text-align: center; background: #f7f5ff; min-width: 80px; }
 .tabela-carga { width: 100%; border-collapse: collapse; font-size: 12px; }
-.tabela-carga th { background: #674EA7; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10.5px; font-weight: 700; padding: 7px 12px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
-.tabela-carga td { padding: 7px 12px; border-bottom: 0.5px solid #eee; text-align: center; font-family: 'Segoe UI', Arial, sans-serif; color: #333; }
+.tabela-carga th { background: #674EA7; color: #fff; font-family: 'Segoe UI',Arial,sans-serif; font-size: 10.5px; font-weight: 700; padding: 7px 12px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
+.tabela-carga td { padding: 7px 12px; border-bottom: 0.5px solid #eee; text-align: center; font-family: 'Segoe UI',Arial,sans-serif; color: #333; }
 .tabela-carga .tc-destaque { font-weight: 700; color: #674EA7; }
 .tabela-carga tr.ativo td { background: #ede9ff; }
 .assinatura { margin-top: 2.5rem; text-align: center; }
 .assinatura .linha { border-top: 1px solid #555; width: 240px; margin: 0 auto 0.5rem; }
-.assinatura p { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; color: #555; }
-.rodape { background: #f7f5ff; border-top: 2px solid #674EA7; padding: 1.25rem 3rem; text-align: center; font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; color: #888; line-height: 1.7; }
-
+.assinatura p { font-family: 'Segoe UI',Arial,sans-serif; font-size: 12px; color: #555; }
+.rodape { background: #f7f5ff; border-top: 2px solid #674EA7; padding: 1.25rem 3rem; text-align: center; font-family: 'Segoe UI',Arial,sans-serif; font-size: 11px; color: #888; line-height: 1.7; }
 @media print {
   body { background: #fff; }
   .interface > .card, .actions { display: none !important; }
@@ -94,7 +92,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
       <input type="text" id="sheet-url" placeholder="https://docs.google.com/spreadsheets/d/..." />
       <button class="btn btn-primary" onclick="carregar()">Carregar</button>
     </div>
-    <p class="status" id="status">Cole o link do Google Sheets com acesso público de visualização e clique em Carregar.</p>
+    <p class="status" id="status">https://script.google.com/macros/s/AKfycbyGhlZOMDe37mISEYTtxUQQxiU7YDPzPo0rJv6GUpN8Gq1UasYpS7hb8Xi2CxKe9aI/exec.</p>
   </div>
 
   <div id="preview-wrap">
@@ -197,88 +195,48 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 </div>
 
 <script>
+// ─── CONFIGURAÇÃO ───────────────────────────────────────────────
+// Após publicar o Apps Script, cole a URL aqui:
+const BACKEND_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT';
+// ────────────────────────────────────────────────────────────────
+
 const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 function mesAno() { const d = new Date(); return MESES[d.getMonth()] + '/' + d.getFullYear(); }
 function setStatus(msg, tipo) { const el = document.getElementById('status'); el.textContent = msg; el.className = 'status '+(tipo||''); }
 function extrairId(url) { const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/); return m ? m[1] : null; }
 
-// Usa proxy allorigins para contornar CORS
-// O proxy faz a requisição server-side e devolve sem restrição de origem
-function gvizURL(id, nomeDaAba) {
-  const googleUrl = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(nomeDaAba)}`;
-  return `https://api.allorigins.win/raw?url=${encodeURIComponent(googleUrl)}`;
-}
-
-function parseCSV(text) {
-  const rows = [];
-  for (const line of text.split('\n')) {
-    if (!line.trim()) continue;
-    const cells = []; let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { inQ = !inQ; continue; }
-      if (c === ',' && !inQ) { cells.push(cur.trim()); cur = ''; continue; }
-      cur += c;
-    }
-    cells.push(cur.trim());
-    rows.push(cells);
-  }
-  return rows;
-}
-
-async function fetchAba(id, nome) {
-  const r = await fetch(gvizURL(id, nome));
-  if (!r.ok) throw new Error(`Aba "${nome}" não encontrada ou planilha sem acesso público.`);
-  return parseCSV(await r.text());
-}
-
 async function carregar() {
+  if (BACKEND_URL === 'COLE_AQUI_A_URL_DO_APPS_SCRIPT') {
+    setStatus('Configure o BACKEND_URL no código HTML antes de usar.', 'err');
+    return;
+  }
+
   const url = document.getElementById('sheet-url').value.trim();
   const id = extrairId(url);
   if (!id) { setStatus('Link inválido. Cole o link completo do Google Sheets.', 'err'); return; }
 
   setStatus('Carregando dados...', '');
   try {
-    // Busca as 3 abas pelo nome exato
-    const [rowsComece, rowsMetas, rowsFichi] = await Promise.all([
-      fetchAba(id, 'COMECE AQUI!'),
-      fetchAba(id, 'Metas terapêuticas'),
-      fetchAba(id, 'Nova FICHI').catch(() => [])
-    ]);
+    const resp = await fetch(`${BACKEND_URL}?id=${id}`);
+    const dados = await resp.json();
 
-    // COMECE AQUI!: linha 13 = índice 12, col C = índice 2
-    const nomeCrianca  = (rowsComece[12] || [])[2] || '';
-    // linha 31 = índice 30, col C = índice 2
-    const nomeCuidador = (rowsComece[30] || [])[2] || '';
-    // Nova FICHI: linha 31 = índice 30, col F = índice 5
-    const horasTotais  = (rowsFichi[30] || [])[5] || '—';
+    if (dados.erro) throw new Error(dados.erro);
 
-    // Metas terapêuticas: A=0 Domínio, B=1 Subdomínio, J=9 Objetivo padronizado
-    const objetivos = [];
-    for (let i = 1; i < rowsMetas.length; i++) {
-      const row = rowsMetas[i]; if (!row) continue;
-      const dominio   = (row[0]||'').trim();
-      const subdomain = (row[1]||'').trim();
-      const obj       = (row[9]||'').trim();
-      if (subdomain && obj) objetivos.push({ dominio, subdomain, obj });
-    }
+    const { nomeCrianca, nomeCuidador, horasTotais, objetivos } = dados;
 
-    // Preencher capa
     document.getElementById('capa-nome').textContent = nomeCrianca || '—';
     document.getElementById('capa-mes').textContent  = mesAno();
-    // Saudação e dados
     document.getElementById('saud-nome').textContent     = nomeCrianca || '—';
     document.getElementById('dado-crianca').textContent  = nomeCrianca || '—';
     document.getElementById('dado-cuidador').textContent = nomeCuidador || '—';
-    // Horas
-    document.getElementById('horas-totais').textContent = horasTotais;
+    document.getElementById('horas-totais').textContent  = horasTotais;
+
     document.querySelectorAll('#tbody-carga tr').forEach(tr => {
       tr.classList.toggle('ativo', tr.dataset.h === horasTotais);
     });
 
-    // Tabela objetivos
     const tbody = document.getElementById('tbody-obj');
-    if (!objetivos.length) {
+    if (!objetivos || !objetivos.length) {
       tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#bbb;padding:2rem;font-family:sans-serif;font-size:13px;">Nenhum objetivo selecionado na planilha.</td></tr>';
     } else {
       let domAnt = '', subAnt = '';
