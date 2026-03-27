@@ -8,22 +8,12 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #1a1a1a; }
 
-/* ── Interface wrapper ── */
 .interface { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem; }
 
-/* ── Header com logo no canto ── */
-.header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 1.75rem;
-}
+/* ── Header ── */
+.header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.75rem; }
 .header-logo { height: 22px; display: block; width: auto; }
-.header-divider {
-  width: 1px; height: 16px;
-  background: #ccc;
-  margin: 0 4px;
-}
+.header-divider { width: 1px; height: 16px; background: #ccc; margin: 0 4px; }
 .header-sub { font-size: 13px; color: #888; }
 
 /* ── Hero ── */
@@ -51,6 +41,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .btn-primary { background: #674EA7; color: #fff; }
 .btn-outline { background: #fff; color: #674EA7; border: 1.5px solid #674EA7; }
 .btn-pdf { background: #2e7d32; color: #fff; }
+.btn-danger { background: #fff; color: #c62828; border: 1.5px solid #e8b4b4; }
 .btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 6px; }
 .btn-all { background: #674EA7; color: #fff; padding: 7px 16px; font-size: 12px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-family: inherit; }
 .btn-all:hover, .btn:hover { opacity: 0.85; }
@@ -61,26 +52,107 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .status.ok  { color: #2e7d32; font-weight: 600; }
 .status.err { color: #c62828; }
 
-/* ── Actions bar ── */
-.actions { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
-.actions-info { font-size: 13px; color: #555; flex: 1; min-width: 200px; }
-
-/* ── Preview ── */
-#preview-wrap { display: none; }
-#preview-wrap.visible { display: block; }
-
 /* ── PDF lista ── */
 .pdf-lista { list-style: none; }
-.pdf-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid #eee; }
+
+.pdf-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 0.5px solid #eee;
+}
 .pdf-item:last-child { border-bottom: none; }
-.pdf-icon { font-size: 20px; flex-shrink: 0; }
-.pdf-info { flex: 1; min-width: 0; }
+
+/* checkbox */
+.pdf-check { width: 16px; height: 16px; accent-color: #674EA7; cursor: pointer; flex-shrink: 0; }
+
+.pdf-icon { font-size: 18px; flex-shrink: 0; }
+
+/* área clicável para abrir preview */
+.pdf-info {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 4px 6px;
+  transition: background 0.12s;
+}
+.pdf-info:hover { background: #f0eff5; }
 .pdf-nome { font-size: 13.5px; font-weight: 600; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pdf-data { font-size: 11px; color: #999; margin-top: 2px; }
+.pdf-hint { font-size: 10.5px; color: #aaa; margin-top: 1px; }
+
+.pdf-acoes { display: flex; gap: 6px; flex-shrink: 0; }
+
 .pdf-vazio { font-size: 13px; color: #bbb; text-align: center; padding: 1.5rem 0; }
 
-/* ── RELATÓRIO ── */
-#relatorio { background: #fff; font-family: 'Georgia','Times New Roman',serif; color: #1a1a1a; border: 0.5px solid #ddd; border-radius: 8px; overflow: hidden; }
+/* barra de seleção múltipla */
+.sel-bar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: #f7f5ff;
+  border: 1px solid #d5cdf0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #555;
+  flex-wrap: wrap;
+}
+.sel-bar.visible { display: flex; }
+.sel-bar-info { flex: 1; }
+.sel-bar button { padding: 5px 12px; font-size: 12px; border-radius: 6px; border: none; cursor: pointer; font-family: inherit; font-weight: 600; }
+.sel-bar .btn-dl  { background: #674EA7; color: #fff; }
+.sel-bar .btn-del { background: #fff; color: #c62828; border: 1px solid #e8b4b4; }
+.sel-bar .btn-cancel { background: #fff; color: #555; border: 1px solid #ccc; }
+
+/* ── Modal de preview ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 100;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 720px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  margin: auto;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 0.5px solid #eee;
+  background: #fafafa;
+}
+.modal-header-title { font-size: 13px; font-weight: 700; color: #555; }
+.modal-header-acoes { display: flex; gap: 8px; align-items: center; }
+.modal-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: #999; line-height: 1;
+  padding: 2px 6px; border-radius: 4px;
+}
+.modal-close:hover { background: #f0eff5; color: #333; }
+
+.modal-body { overflow-y: auto; max-height: 80vh; }
+
+/* ── Relatório (dentro do modal) ── */
+#relatorio { background: #fff; font-family: 'Georgia','Times New Roman',serif; color: #1a1a1a; }
 .capa { background: #674EA7; color: #fff; padding: 3rem 3rem 2.5rem; position: relative; min-height: 200px; }
 .capa-numero { font-family: 'Segoe UI',Arial,sans-serif; font-size: 96px; font-weight: 700; opacity: 0.12; position: absolute; top: 1rem; right: 2rem; line-height: 1; }
 .capa-label { font-family: 'Segoe UI',Arial,sans-serif; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.75; margin-bottom: 0.2rem; }
@@ -103,7 +175,6 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .texto-corpo strong { color: #1a1a1a; }
 .lista-areas { padding-left: 1.25rem; margin-bottom: 0.85rem; }
 .lista-areas li { font-size: 13px; line-height: 1.75; color: #333; margin-bottom: 0.1rem; }
-.secao-bold { font-family: 'Segoe UI',Arial,sans-serif; font-size: 14px; font-weight: 700; color: #1a1a1a; margin: 1.5rem 0 0.5rem; }
 .tabela-obj { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 0.75rem; }
 .tabela-obj th { background: #674EA7; color: #fff; font-family: 'Segoe UI',Arial,sans-serif; font-size: 11px; font-weight: 700; padding: 9px 14px; text-align: center; text-transform: uppercase; letter-spacing: 0.8px; }
 .tabela-obj td { padding: 9px 14px; border-bottom: 0.5px solid #eee; vertical-align: top; line-height: 1.6; }
@@ -125,33 +196,134 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .assinatura p { font-family: 'Segoe UI',Arial,sans-serif; font-size: 12px; color: #555; }
 .rodape { background: #f7f5ff; border-top: 2px solid #674EA7; padding: 1.25rem 3rem; text-align: center; font-family: 'Segoe UI',Arial,sans-serif; font-size: 11px; color: #888; line-height: 1.7; }
 
+/* ── Área de ações pós-carregamento (dentro do card planilha) ── */
+.loaded-bar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 0.5px solid #eee;
+  flex-wrap: wrap;
+}
+.loaded-bar.visible { display: flex; }
+.loaded-info { flex: 1; font-size: 13px; color: #555; min-width: 160px; }
+
 @media print {
   body { background: #fff; }
-  .header, .hero, .card, #card-lista, .actions { display: none !important; }
-  #preview-wrap { display: block !important; }
-  #relatorio { border: none; border-radius: 0; }
-  .interface { padding: 0; max-width: 100%; }
+  .interface, .modal-overlay { display: none !important; }
+  #print-area { display: block !important; }
 }
+#print-area { display: none; }
 </style>
 </head>
 <body>
+
+<!-- Modal de preview do relatório -->
+<div class="modal-overlay" id="modal-overlay" onclick="fecharModalFora(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-header-title" id="modal-titulo">Prévia do relatório</span>
+      <div class="modal-header-acoes">
+        <button class="btn btn-pdf btn-sm" id="btn-pdf-modal" onclick="baixarPDFAtual()">⬇ Baixar PDF</button>
+        <button class="btn btn-outline btn-sm" onclick="imprimirRelatorio()">🖨 Imprimir</button>
+        <button class="modal-close" onclick="fecharModal()">✕</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div id="relatorio">
+        <div class="capa">
+          <div class="capa-numero">01</div>
+          <div class="capa-label">Genial Care · Documento Clínico</div>
+          <div class="capa-titulo">Relatório de Avaliação Inicial e<br>Plano de Ensino Individualizado</div>
+          <div class="capa-nome" id="capa-nome">—</div>
+          <div class="capa-mes"  id="capa-mes">—</div>
+        </div>
+        <div class="corpo">
+          <div class="secao">
+            <div class="secao-titulo-principal">Prezado(a) cuidador(a) de <em id="saud-nome">—</em>,</div>
+            <p class="texto-corpo">É com muita alegria que apresentamos o <strong>Plano de Ensino Individualizado (PEI)</strong> elaborado especialmente para o seu filho(a). Este documento marca o início da jornada terapêutica na Genial Care, traduzindo nossa avaliação clínica em objetivos práticos e personalizados.</p>
+            <p class="texto-corpo">Nosso método baseia-se nas melhores evidências científicas em <strong>Análise do Comportamento Aplicada (ABA)</strong>, com foco no desenvolvimento de habilidades funcionais, comunicação e autonomia no dia a dia da criança.</p>
+          </div>
+          <div class="secao">
+            <div class="secao-titulo">Como chegamos aqui</div>
+            <div class="processo-grid">
+              <div class="processo-card"><span class="picon">📋</span><strong>Entrevista com a família</strong><p>Levantamento do histórico desenvolvimental, rotinas, prioridades e expectativas dos cuidadores.</p></div>
+              <div class="processo-card"><span class="picon">🔍</span><strong>Avaliação de habilidades</strong><p>Aplicação de instrumentos padronizados (VB-MAPP, ABLLS-R) para mapear o repertório atual da criança.</p></div>
+              <div class="processo-card"><span class="picon">📊</span><strong>Análise clínica</strong><p>Integração dos dados pela equipe para identificar as áreas prioritárias de intervenção.</p></div>
+              <div class="processo-card"><span class="picon">🎯</span><strong>Elaboração do PEI</strong><p>Seleção e redação dos objetivos terapêuticos individualizados que guiarão o tratamento.</p></div>
+            </div>
+          </div>
+          <div class="secao">
+            <div class="secao-titulo">Dados do paciente</div>
+            <p class="dado-linha"><strong>Criança:</strong> <span id="dado-crianca">—</span></p>
+            <p class="dado-linha"><strong>Cuidador responsável:</strong> <span id="dado-cuidador">—</span></p>
+            <p class="dado-linha"><strong>Carga semanal prescrita:</strong> <span id="horas-totais">—</span> horas/semana</p>
+          </div>
+          <div class="secao">
+            <div class="secao-titulo">Carga horária semanal de ABA</div>
+            <table class="tabela-carga-topo">
+              <tr>
+                <td class="tc-label">Carga prescrita para este paciente</td>
+                <td class="tc-valor" id="horas-totais-capa">—</td>
+                <td class="tc-label">horas / semana de ABA direta</td>
+              </tr>
+            </table>
+            <table class="tabela-carga">
+              <thead><tr><th>Carga (h/sem)</th><th>Sessões/semana</th><th>Duração/sessão</th><th>Perfil indicado</th></tr></thead>
+              <tbody id="tbody-carga">
+                <tr data-h="10"><td class="tc-destaque">10h</td><td>5</td><td>2h</td><td>Nível 1 – Introdução</td></tr>
+                <tr data-h="15"><td class="tc-destaque">15h</td><td>5</td><td>3h</td><td>Nível 2 – Moderado</td></tr>
+                <tr data-h="20"><td class="tc-destaque">20h</td><td>5</td><td>4h</td><td>Nível 3 – Intensivo</td></tr>
+                <tr data-h="25"><td class="tc-destaque">25h</td><td>5</td><td>5h</td><td>Nível 4 – Intensivo+</td></tr>
+                <tr data-h="30"><td class="tc-destaque">30h</td><td>6</td><td>5h</td><td>Nível 5 – Full</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="secao">
+            <div class="secao-titulo">Objetivos terapêuticos selecionados</div>
+            <p class="texto-corpo">Os objetivos abaixo foram selecionados com base no perfil avaliado e representam as metas de aprendizagem para o período inicial do tratamento.</p>
+            <table class="tabela-obj">
+              <thead><tr><th style="width:18%">Domínio</th><th style="width:22%">Subdomínio</th><th>Objetivo</th></tr></thead>
+              <tbody id="tbody-obj">
+                <tr><td colspan="3" style="text-align:center;color:#bbb;padding:2rem;font-family:sans-serif;font-size:13px;">Carregue uma planilha para exibir os objetivos.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="secao">
+            <div class="secao-titulo">Próximos passos</div>
+            <p class="texto-corpo">Com o PEI definido, daremos início à fase de intervenção direta. A equipe clínica estará disponível para esclarecer dúvidas e alinhar expectativas ao longo do processo.</p>
+            <ul class="lista-areas">
+              <li>Agendamento das sessões iniciais com o terapeuta responsável</li>
+              <li>Orientação aos cuidadores sobre como apoiar os objetivos em casa</li>
+              <li>Reunião de alinhamento ao final do primeiro mês de intervenção</li>
+            </ul>
+          </div>
+          <div class="assinatura">
+            <div class="linha"></div>
+            <p>Equipe Clínica — Genial Care</p>
+          </div>
+        </div>
+        <div class="rodape"><strong>Genial Care</strong> · Plataforma de Cuidado Clínico<br>Este documento é confidencial e destinado exclusivamente ao cuidador responsável pela criança identificada acima.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="interface">
 
-  <!-- Header com logo original da Genial Care, pequena no canto -->
+  <!-- Header -->
   <div class="header">
     <svg class="header-logo" viewBox="200 280 1500 560" xmlns="http://www.w3.org/2000/svg">
       <style>.st0{fill:#6D68AD;}.st1{fill:#AEE2E6;}</style>
-      <!-- Símbolo (ícone duplo círculo) -->
       <path class="st1" d="M547.2,350.06c-30.56,0-58.27,12.21-78.53,32.01l40.06,40.06c10.09-9.37,23.61-15.1,38.46-15.1c31.24,0,56.57,25.33,56.57,56.57s-25.33,56.57-56.57,56.57c-14.92,0-28.49-5.79-38.6-15.23l-0.01,0.01l-0.21-0.21c-0.16-0.15-0.31-0.31-0.46-0.46c-0.53-0.51-1.05-1.03-1.56-1.56c-0.52-0.54-1.04-1.09-1.54-1.66l-77.06-79.5l0,0c-10.04-9.08-23.37-14.59-38.03-14.54c-31.24,0.11-56.57,25.33-56.57,56.57c0,31.24,25.33,56.57,56.57,56.57c15.64,0,29.77-6.34,39.99-16.6l33.58,33.58c20.58,23.08,50.53,37.62,83.89,37.62c62.05,0,112.36-50.3,112.36-112.36S609.25,350.06,547.2,350.06z"/>
       <path class="st0" d="M547.2,407.03c-14.86,0-28.37,5.73-38.46,15.1l-38.02-38.02c-20.46-21.47-49.34-34.86-81.35-34.86c-62.05,0-112.36,50.3-112.36,112.36s50.3,112.36,112.36,112.36c30.62,0,58.37-12.25,78.64-32.12l-38.28-38.28c-10.23,10.25-24.36,16.6-39.99,16.6c-31.24,0-56.57-25.33-56.57-56.57c0-31.24,25.33-56.46,56.57-56.57c14.65-0.05,27.99,5.46,38.03,14.54l0,0l77.06,79.5c1.13,1.28,2.32,2.5,3.56,3.67l0.21,0.21l0.01-0.01c10.11,9.44,23.67,15.23,38.6,15.23c31.24,0,56.57-25.33,56.57-56.57S578.44,407.03,547.2,407.03z"/>
-      <!-- Wordmark "genial" -->
       <path class="st0" d="M894.18,472.25c0-49.92-40.47-90.39-90.39-90.39c-49.88,0-90.39,40.51-90.39,90.39c0,49.92,40.47,90.39,90.39,90.39c14.97,0,29.09-3.64,41.53-10.09l0,0c-8.74,33.69-51.63,30.54-64.07,28.88c-1.8-0.24-3.39,1.16-3.39,2.97v39.93c0,1.67,1.36,3.02,3.03,3l31.1-0.36c80.59-11.93,82.18-83.45,82.18-83.45v-66.81l-0.12,0.18C894.14,475.37,894.18,473.81,894.18,472.25z M804.17,517.25c-24.89,0-45.07-20.18-45.07-45.07c0-24.89,20.18-45.07,45.07-45.07c24.89,0,45.07,20.18,45.07,45.07C849.24,497.07,829.06,517.25,804.17,517.25z"/>
       <path class="st0" d="M1066.14,493.22H959.53c5.03,19.74,20.82,30.16,45.23,30.16c11.49,0,21.54-2.51,34.1-10.41c3.23-2.15,5.38-1.79,7.9,0.72l18.67,17.95c2.15,2.52,2.15,5.03-0.72,7.9c-16.87,16.87-39.85,26.92-65.33,26.92c-55.28,0-93.33-40.56-93.33-92.25s38.05-92.25,89.38-92.25c50.98,0,83.64,40.56,83.64,89.02C1079.06,485.68,1077.27,493.22,1066.14,493.22z M958.81,459.12h72.51c-3.23-21.54-17.95-31.95-35.54-31.95C977.83,427.17,962.76,437.58,958.81,459.12z"/>
       <path class="st0" d="M1267.21,457.68v98.72c0,3.23-2.15,5.38-5.38,5.38h-43.08c-3.23,0-5.38-2.15-5.38-5.38v-87.95c0-28.36-15.79-36.62-30.15-36.62c-24.05,0-34.1,23.69-34.1,32.31v92.25c0,3.23-2.15,5.38-5.38,5.38h-43.08c-3.23,0-5.38-2.15-5.38-5.38V391.27c0-3.23,2.15-5.38,5.38-5.38h41.64c3.23,0,5.03,2.15,5.38,5.38l1.43,22.25c11.13-18.3,29.08-31.59,54.2-31.59C1238.85,381.94,1267.21,410.66,1267.21,457.68z"/>
       <path class="st0" d="M1297.36,326.3c0-16.15,12.92-29.08,29.08-29.08c15.79,0,28.72,12.92,28.72,29.08c0,15.79-12.92,28.72-28.72,28.72C1310.28,355.02,1297.36,342.09,1297.36,326.3z M1304.9,385.89h43.08c3.23,0,5.38,2.15,5.38,5.38V556.4c0,3.23-2.15,5.38-5.38,5.38h-43.08c-3.23,0-5.38-2.15-5.38-5.38V391.27C1299.51,388.04,1301.67,385.89,1304.9,385.89z"/>
       <path class="st0" d="M1566.22,391.27V556.4c0,3.23-2.15,5.38-5.38,5.38h-39.13c-3.23,0-5.03-2.15-5.38-5.38l-1.08-12.92c-12.21,13.64-28.72,22.97-50.26,22.97c-48.82,0-84.72-40.92-84.72-92.25s35.9-92.25,84.72-92.25c20.82,0,37.69,9.69,50.26,24.05l1.08-14.72c0.36-3.23,2.15-5.38,5.38-5.38h39.13C1564.07,385.89,1566.22,388.04,1566.22,391.27z M1511.3,473.84c0-23.34-16.87-43.08-39.49-43.08c-22.97,0-39.84,18.67-39.84,43.08c0,24.77,16.87,43.43,39.84,43.43C1494.43,517.27,1511.3,497.17,1511.3,473.84z"/>
       <path class="st0" d="M1603.19,299.73h43.08c3.23,0,5.38,2.15,5.38,5.38V556.4c0,3.23-2.15,5.38-5.38,5.38h-43.08c-3.23,0-5.38-2.15-5.38-5.38V305.12C1597.81,301.89,1599.96,299.73,1603.19,299.73z"/>
-      <!-- "care" wordmark -->
       <path class="st0" d="M1163.34,747.34c2.79-2.79,5.23-2.44,7.68,0l5.58,4.89c2.09,2.09,2.44,4.88,0.35,7.33c-16.06,18.5-38.39,30.37-66.32,30.37c-49.21,0-85.52-39.44-85.52-89.7s36.3-89.7,85.52-89.7c27.23,0,49.22,11.87,65.27,30.37c2.09,2.44,1.74,5.24-0.35,7.33l-5.58,4.54c-2.44,2.45-4.89,2.79-7.68,0.35c-10.12-9.42-21.99-23.74-51.66-23.74c-38.39,0-65.27,30.37-65.27,70.86c0,40.49,26.88,70.86,65.27,70.86C1141,771.07,1153.57,757.46,1163.34,747.34z"/>
       <path class="st0" d="M1364.74,619.58v160.56c0,3.14-2.09,5.24-5.24,5.24h-9.42c-3.14,0-4.89-2.09-5.23-5.24l-1.75-22.69c-13.26,19.55-34.9,32.11-62.48,32.11c-49.22,0-84.12-39.44-84.12-89.36s34.9-89.36,84.12-89.36c27.92,0,49.56,12.57,62.83,32.46l1.4-23.73c0.35-3.14,2.09-5.24,5.23-5.24h9.42C1362.64,614.35,1364.74,616.44,1364.74,619.58z M1345.19,714.88l0.7-14.66l-0.7-15.01c-5.93-31.42-30.72-55.5-63.18-55.5c-37.7,0-65.27,30.02-65.27,70.16c0,40.49,27.57,70.51,65.27,70.51C1314.47,770.37,1339.26,746.29,1345.19,714.88z"/>
       <path class="st0" d="M1484.11,620.63l-4.19,8.73c-1.4,2.45-3.14,2.79-5.93,2.09c-3.14-0.7-6.28-1.74-13.61-1.74c-20.94,0-38.74,16.06-38.74,38.39v112.04c0,3.14-2.09,5.24-5.24,5.24h-10.47c-3.14,0-5.24-2.09-5.24-5.24V619.58c0-3.14,2.09-5.24,5.24-5.24h8.73c3.14,0,4.89,2.09,5.24,5.24l1.4,14.31c9.77-13.97,23.74-23.39,41.89-23.39c8.03,0,15.36,1.74,20.24,4.88C1485.15,616.44,1485.5,617.84,1484.11,620.63z"/>
@@ -165,9 +337,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
   <div class="hero">
     <span class="hero-wave">👋</span>
     <div class="hero-titulo">Gerador de Relatório PEI Inicial</div>
-    <div class="hero-desc">
-      Gere relatórios clínicos personalizados a partir dos dados do Google Sheets — sem esforço manual, com layout profissional pronto para envio às famílias.
-    </div>
+    <div class="hero-desc">Gere relatórios clínicos personalizados a partir dos dados do Google Sheets — sem esforço manual, com layout profissional pronto para envio às famílias.</div>
     <div class="hero-steps">
       <div class="hero-step"><span class="hero-step-num">1</span> Cole o link da planilha</div>
       <div class="hero-step"><span class="hero-step-num">2</span> Pré-visualize o relatório</div>
@@ -175,7 +345,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
     </div>
   </div>
 
-  <!-- Card: URL da planilha -->
+  <!-- Card: planilha -->
   <div class="card">
     <div class="card-header">
       <h2>Planilha do paciente</h2>
@@ -185,155 +355,33 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
       <button class="btn btn-primary" onclick="carregar()">Carregar</button>
     </div>
     <div id="status" class="status">Aguardando link da planilha.</div>
+
+    <!-- barra que aparece após carregar com sucesso -->
+    <div class="loaded-bar" id="loaded-bar">
+      <span class="loaded-info" id="loaded-info"></span>
+      <button class="btn btn-outline btn-sm" onclick="abrirPreviewAtual()">👁 Ver prévia</button>
+      <button class="btn btn-pdf btn-sm" id="btn-pdf" onclick="baixarPDF()">⬇ Baixar PDF</button>
+    </div>
   </div>
 
   <!-- Card: PDFs gerados -->
   <div class="card" id="card-lista">
     <div class="card-header">
       <h2>Relatórios gerados</h2>
-      <button class="btn-all" id="btn-all" onclick="baixarTodos()" disabled>⬇ Baixar todos</button>
     </div>
+
+    <!-- barra de seleção múltipla -->
+    <div class="sel-bar" id="sel-bar">
+      <span class="sel-bar-info" id="sel-info">0 selecionados</span>
+      <button class="btn-dl"  onclick="baixarSelecionados()">⬇ Baixar selecionados</button>
+      <button class="btn-del" onclick="removerSelecionados()">🗑 Remover</button>
+      <button class="btn-cancel" onclick="limparSelecao()">Cancelar</button>
+    </div>
+
     <ul class="pdf-lista" id="lista-pdfs">
       <li class="pdf-vazio">Nenhum relatório gerado ainda.</li>
     </ul>
   </div>
-
-  <!-- Pré-visualização: dentro da .interface, mesma largura dos cards -->
-  <div id="preview-wrap">
-    <div class="actions">
-      <span class="actions-info" id="actions-info"></span>
-      <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Imprimir</button>
-      <button id="btn-pdf" class="btn btn-pdf btn-sm" onclick="baixarPDF()">⬇ Baixar PDF oficial</button>
-    </div>
-
-    <div id="relatorio">
-      <div class="capa">
-        <div class="capa-numero">01</div>
-        <div class="capa-label">Genial Care · Documento Clínico</div>
-        <div class="capa-titulo">Relatório de Avaliação Inicial e<br>Plano de Ensino Individualizado</div>
-        <div class="capa-nome" id="capa-nome">—</div>
-        <div class="capa-mes"  id="capa-mes">—</div>
-      </div>
-
-      <div class="corpo">
-
-        <!-- Saudação -->
-        <div class="secao">
-          <div class="secao-titulo-principal">Prezado(a) cuidador(a) de <em id="saud-nome">—</em>,</div>
-          <p class="texto-corpo">
-            É com muita alegria que apresentamos o <strong>Plano de Ensino Individualizado (PEI)</strong> elaborado especialmente para o seu filho(a). Este documento marca o início da jornada terapêutica na Genial Care, traduzindo nossa avaliação clínica em objetivos práticos e personalizados.
-          </p>
-          <p class="texto-corpo">
-            Nosso método baseia-se nas melhores evidências científicas em <strong>Análise do Comportamento Aplicada (ABA)</strong>, com foco no desenvolvimento de habilidades funcionais, comunicação e autonomia no dia a dia da criança.
-          </p>
-        </div>
-
-        <!-- Processo -->
-        <div class="secao">
-          <div class="secao-titulo">Como chegamos aqui</div>
-          <div class="processo-grid">
-            <div class="processo-card">
-              <span class="picon">📋</span>
-              <strong>Entrevista com a família</strong>
-              <p>Levantamento do histórico desenvolvimental, rotinas, prioridades e expectativas dos cuidadores.</p>
-            </div>
-            <div class="processo-card">
-              <span class="picon">🔍</span>
-              <strong>Avaliação de habilidades</strong>
-              <p>Aplicação de instrumentos padronizados (VB-MAPP, ABLLS-R) para mapear o repertório atual da criança.</p>
-            </div>
-            <div class="processo-card">
-              <span class="picon">📊</span>
-              <strong>Análise clínica</strong>
-              <p>Integração dos dados pela equipe para identificar as áreas prioritárias de intervenção.</p>
-            </div>
-            <div class="processo-card">
-              <span class="picon">🎯</span>
-              <strong>Elaboração do PEI</strong>
-              <p>Seleção e redação dos objetivos terapêuticos individualizados que guiarão o tratamento.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Dados do paciente -->
-        <div class="secao">
-          <div class="secao-titulo">Dados do paciente</div>
-          <p class="dado-linha"><strong>Criança:</strong> <span id="dado-crianca">—</span></p>
-          <p class="dado-linha"><strong>Cuidador responsável:</strong> <span id="dado-cuidador">—</span></p>
-          <p class="dado-linha"><strong>Carga semanal prescrita:</strong> <span id="horas-totais">—</span> horas/semana</p>
-        </div>
-
-        <!-- Carga horária -->
-        <div class="secao">
-          <div class="secao-titulo">Carga horária semanal de ABA</div>
-          <table class="tabela-carga-topo">
-            <tr>
-              <td class="tc-label">Carga prescrita para este paciente</td>
-              <td class="tc-valor" id="horas-totais-capa">—</td>
-              <td class="tc-label">horas / semana de ABA direta</td>
-            </tr>
-          </table>
-          <table class="tabela-carga">
-            <thead>
-              <tr>
-                <th>Carga (h/sem)</th>
-                <th>Sessões/semana</th>
-                <th>Duração/sessão</th>
-                <th>Perfil indicado</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-carga">
-              <tr data-h="10"><td class="tc-destaque">10h</td><td>5</td><td>2h</td><td>Nível 1 – Introdução</td></tr>
-              <tr data-h="15"><td class="tc-destaque">15h</td><td>5</td><td>3h</td><td>Nível 2 – Moderado</td></tr>
-              <tr data-h="20"><td class="tc-destaque">20h</td><td>5</td><td>4h</td><td>Nível 3 – Intensivo</td></tr>
-              <tr data-h="25"><td class="tc-destaque">25h</td><td>5</td><td>5h</td><td>Nível 4 – Intensivo+</td></tr>
-              <tr data-h="30"><td class="tc-destaque">30h</td><td>6</td><td>5h</td><td>Nível 5 – Full</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Objetivos -->
-        <div class="secao">
-          <div class="secao-titulo">Objetivos terapêuticos selecionados</div>
-          <p class="texto-corpo">Os objetivos abaixo foram selecionados com base no perfil avaliado e representam as metas de aprendizagem para o período inicial do tratamento.</p>
-          <table class="tabela-obj">
-            <thead>
-              <tr>
-                <th style="width:18%">Domínio</th>
-                <th style="width:22%">Subdomínio</th>
-                <th>Objetivo</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-obj">
-              <tr><td colspan="3" style="text-align:center;color:#bbb;padding:2rem;font-family:sans-serif;font-size:13px;">Carregue uma planilha para exibir os objetivos.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Próximos passos -->
-        <div class="secao">
-          <div class="secao-titulo">Próximos passos</div>
-          <p class="texto-corpo">Com o PEI definido, daremos início à fase de intervenção direta. A equipe clínica estará disponível para esclarecer dúvidas e alinhar expectativas ao longo do processo.</p>
-          <ul class="lista-areas">
-            <li>Agendamento das sessões iniciais com o terapeuta responsável</li>
-            <li>Orientação aos cuidadores sobre como apoiar os objetivos em casa</li>
-            <li>Reunião de alinhamento ao final do primeiro mês de intervenção</li>
-          </ul>
-        </div>
-
-        <div class="assinatura">
-          <div class="linha"></div>
-          <p>Equipe Clínica — Genial Care</p>
-        </div>
-
-      </div><!-- /corpo -->
-
-      <div class="rodape">
-        <strong>Genial Care</strong> · Plataforma de Cuidado Clínico<br>
-        Este documento é confidencial e destinado exclusivamente ao cuidador responsável pela criança identificada acima.
-      </div>
-    </div><!-- /relatorio -->
-  </div><!-- /preview-wrap -->
 
 </div><!-- /interface -->
 
@@ -342,6 +390,7 @@ const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwDvOdMqk1NMSeFnfU6
 let sheetIdAtual = null;
 let nomeAtual    = '';
 
+// ── Status ──────────────────────────────────────────────────────
 function setStatus(msg, tipo) {
   const el = document.getElementById('status');
   el.textContent = msg;
@@ -352,19 +401,36 @@ function extrairId(url) {
   const m = url.match(/\/d\/([\w-]+)/);
   return m ? m[1] : null;
 }
-
 function mesAno() {
   return new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 }
-
 function nomeArquivo(nome) {
   const d = new Date();
-  const mm = String(d.getMonth()+1).padStart(2,'0');
-  const yy = d.getFullYear();
-  return `PEI_${nome.replace(/\s+/g,'_')}_${mm}_${yy}`;
+  return `PEI_${nome.replace(/\s+/g,'_')}_${String(d.getMonth()+1).padStart(2,'0')}_${d.getFullYear()}`;
 }
 
-// ── Lista persistente de PDFs ──────────────────────────────────
+// ── Modal ────────────────────────────────────────────────────────
+function abrirModal(titulo) {
+  document.getElementById('modal-titulo').textContent = titulo || 'Prévia do relatório';
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function fecharModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function fecharModalFora(e) {
+  if (e.target === document.getElementById('modal-overlay')) fecharModal();
+}
+function abrirPreviewAtual() {
+  if (!sheetIdAtual) return;
+  abrirModal(nomeAtual ? `Prévia — ${nomeAtual}` : 'Prévia do relatório');
+}
+function imprimirRelatorio() {
+  window.print();
+}
+
+// ── Lista persistente de PDFs ────────────────────────────────────
 function carregarLista() {
   try { return JSON.parse(localStorage.getItem('genial_pdfs') || '[]'); } catch { return []; }
 }
@@ -378,27 +444,65 @@ function adicionarPDFnaLista(nome, base64) {
   salvarLista(lista);
   renderizarLista();
 }
+
+function getSelecionados() {
+  return Array.from(document.querySelectorAll('.pdf-check:checked')).map(cb => parseInt(cb.dataset.i));
+}
+
+function atualizarSelBar() {
+  const sel = getSelecionados();
+  const bar = document.getElementById('sel-bar');
+  bar.classList.toggle('visible', sel.length > 0);
+  document.getElementById('sel-info').textContent =
+    sel.length === 1 ? '1 selecionado' : `${sel.length} selecionados`;
+}
+
+function limparSelecao() {
+  document.querySelectorAll('.pdf-check').forEach(cb => cb.checked = false);
+  atualizarSelBar();
+}
+
 function renderizarLista() {
   const lista = carregarLista();
-  const ul  = document.getElementById('lista-pdfs');
-  const btn = document.getElementById('btn-all');
+  const ul = document.getElementById('lista-pdfs');
   if (!lista.length) {
     ul.innerHTML = '<li class="pdf-vazio">Nenhum relatório gerado ainda.</li>';
-    btn.disabled = true;
+    document.getElementById('sel-bar').classList.remove('visible');
     return;
   }
-  btn.disabled = false;
   ul.innerHTML = lista.map((item, i) => `
     <li class="pdf-item">
+      <input type="checkbox" class="pdf-check" data-i="${i}" onchange="atualizarSelBar()" />
       <span class="pdf-icon">📄</span>
-      <div class="pdf-info">
+      <div class="pdf-info" onclick="abrirPreviewLista(${i})" title="Clique para ver a prévia">
         <div class="pdf-nome">${item.nome}.pdf</div>
         <div class="pdf-data">${item.data}</div>
+        <div class="pdf-hint">Clique para ver a prévia</div>
       </div>
-      <button class="btn btn-outline btn-sm" onclick="dispararDownloadIdx(${i})">⬇ Baixar</button>
+      <div class="pdf-acoes">
+        <button class="btn btn-outline btn-sm" onclick="dispararDownloadIdx(${i})">⬇</button>
+        <button class="btn btn-danger btn-sm" onclick="removerPDF(${i})">🗑</button>
+      </div>
     </li>
   `).join('');
 }
+
+// ── Remover ──────────────────────────────────────────────────────
+function removerPDF(i) {
+  const lista = carregarLista();
+  lista.splice(i, 1);
+  salvarLista(lista);
+  renderizarLista();
+}
+function removerSelecionados() {
+  const indices = getSelecionados().sort((a,b) => b - a); // do maior pro menor
+  const lista = carregarLista();
+  indices.forEach(i => lista.splice(i, 1));
+  salvarLista(lista);
+  renderizarLista();
+}
+
+// ── Download ─────────────────────────────────────────────────────
 function dispararDownloadIdx(i) {
   const item = carregarLista()[i];
   dispararDownload(item.base64, item.nome);
@@ -411,25 +515,41 @@ function dispararDownload(base64, nome) {
   a.href = url; a.download = nome + '.pdf'; a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-async function baixarTodos() {
-  const lista = carregarLista();
-  if (!lista.length) return;
-  const btn = document.getElementById('btn-all');
-  btn.disabled = true; btn.textContent = 'Baixando…';
-  for (let i = 0; i < lista.length; i++) {
-    dispararDownload(lista[i].base64, lista[i].nome);
-    await new Promise(r => setTimeout(r, 800));
+async function baixarSelecionados() {
+  const indices = getSelecionados();
+  const lista   = carregarLista();
+  for (let i = 0; i < indices.length; i++) {
+    const item = lista[indices[i]];
+    dispararDownload(item.base64, item.nome);
+    if (i < indices.length - 1) await new Promise(r => setTimeout(r, 800));
   }
-  btn.disabled = false; btn.textContent = '⬇ Baixar todos';
+  limparSelecao();
 }
 
-// ── Carregar planilha ──────────────────────────────────────────
+// ── Preview a partir da lista ────────────────────────────────────
+function abrirPreviewLista(i) {
+  const item = carregarLista()[i];
+  if (!item) return;
+  // não temos os dados originais do relatório na lista (só o PDF),
+  // então abrimos o modal informando o nome do arquivo como contexto
+  abrirModal(`Prévia — ${item.nome}`);
+  // se o relatório do modal ainda tiver dados do último carregamento, mostra
+  // caso contrário exibe mensagem no modal
+  const saudNome = document.getElementById('saud-nome').textContent;
+  if (saudNome === '—') {
+    document.getElementById('capa-nome').textContent = item.nome.replace(/^PEI_/,'').replace(/_\d{2}_\d{4}$/,'').replace(/_/g,' ');
+  }
+}
+
+// ── Carregar planilha ────────────────────────────────────────────
 async function carregar() {
   const url = document.getElementById('sheet-url').value.trim();
   const id  = extrairId(url);
   if (!id) { setStatus('Link inválido. Cole o link completo do Google Sheets.', 'err'); return; }
 
   setStatus('Carregando dados…', '');
+  document.getElementById('loaded-bar').classList.remove('visible');
+
   try {
     const resp  = await fetch(`${BACKEND_URL}?id=${id}&acao=dados`);
     const dados = await resp.json();
@@ -446,6 +566,7 @@ async function carregar() {
     document.getElementById('dado-cuidador').textContent     = nomeCuidador || '—';
     document.getElementById('horas-totais').textContent      = horasTotais;
     document.getElementById('horas-totais-capa').textContent = horasTotais;
+    document.getElementById('modal-titulo').textContent      = `Prévia — ${nomeCrianca||'Relatório'}`;
 
     document.querySelectorAll('#tbody-carga tr').forEach(tr => {
       tr.classList.toggle('ativo', tr.dataset.h === horasTotais);
@@ -468,22 +589,21 @@ async function carregar() {
       }).join('');
     }
 
-    document.getElementById('actions-info').textContent =
-      `✓ ${nomeCrianca||'Criança'} · ${objetivos.length} objetivo(s) · Carga: ${horasTotais}h`;
-    document.getElementById('preview-wrap').className = 'visible';
-    setStatus(`Planilha carregada com sucesso. ${objetivos.length} objetivo(s) encontrado(s).`, 'ok');
-    document.getElementById('preview-wrap').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('loaded-info').textContent =
+      `✓ ${nomeCrianca||'Criança'} · ${objetivos.length} obj. · ${horasTotais}h/sem`;
+    document.getElementById('loaded-bar').classList.add('visible');
+    setStatus(`Planilha carregada — ${objetivos.length} objetivo(s) encontrado(s).`, 'ok');
 
   } catch(e) {
     setStatus('Erro: ' + e.message, 'err');
   }
 }
 
-// ── Gerar e baixar PDF ─────────────────────────────────────────
+// ── Gerar e baixar PDF ───────────────────────────────────────────
 async function baixarPDF() {
   if (!sheetIdAtual) { setStatus('Carregue uma planilha primeiro.', 'err'); return; }
   const btn = document.getElementById('btn-pdf');
-  btn.textContent = 'Gerando PDF…'; btn.disabled = true;
+  btn.textContent = 'Gerando…'; btn.disabled = true;
   try {
     const resp = await fetch(`${BACKEND_URL}?id=${sheetIdAtual}&acao=pdf`);
     if (!resp.ok) throw new Error('Erro ao gerar PDF.');
@@ -491,11 +611,17 @@ async function baixarPDF() {
     const nome   = nomeArquivo(nomeAtual);
     adicionarPDFnaLista(nome, base64);
     dispararDownload(base64, nome);
+    setStatus('PDF gerado e salvo na lista.', 'ok');
   } catch(e) {
     setStatus('Erro ao gerar PDF: ' + e.message, 'err');
   } finally {
-    btn.textContent = '⬇ Baixar PDF oficial'; btn.disabled = false;
+    btn.textContent = '⬇ Baixar PDF'; btn.disabled = false;
   }
+}
+
+// mesmo botão no modal
+function baixarPDFAtual() {
+  if (sheetIdAtual) baixarPDF();
 }
 
 // Init
@@ -503,6 +629,9 @@ document.addEventListener('DOMContentLoaded', () => {
   renderizarLista();
   document.getElementById('sheet-url').addEventListener('keydown', e => {
     if (e.key === 'Enter') carregar();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') fecharModal();
   });
 });
 </script>
