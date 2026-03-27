@@ -27,8 +27,6 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 .actions-info { font-size: 13px; color: #555; flex: 1; }
 #preview-wrap { display: none; }
 #preview-wrap.visible { display: block; }
-
-/* RELATÓRIO */
 #relatorio { background: #fff; font-family: 'Georgia','Times New Roman',serif; color: #1a1a1a; border: 0.5px solid #ddd; border-radius: 8px; overflow: hidden; }
 .capa { background: #674EA7; color: #fff; padding: 3rem 3rem 2.5rem; position: relative; min-height: 200px; }
 .capa-numero { font-family: 'Segoe UI',Arial,sans-serif; font-size: 96px; font-weight: 700; opacity: 0.12; position: absolute; top: 1rem; right: 2rem; line-height: 1; }
@@ -92,7 +90,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
       <input type="text" id="sheet-url" placeholder="https://docs.google.com/spreadsheets/d/..." />
       <button class="btn btn-primary" onclick="carregar()">Carregar</button>
     </div>
-    <p class="status" id="status">https://script.google.com/macros/s/AKfycbyGhlZOMDe37mISEYTtxUQQxiU7YDPzPo0rJv6GUpN8Gq1UasYpS7hb8Xi2CxKe9aI/exec.</p>
+    <p class="status" id="status">Cole o link do Google Sheets e clique em Carregar.</p>
   </div>
 
   <div id="preview-wrap">
@@ -195,10 +193,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0eff5; color: #
 </div>
 
 <script>
-// ─── CONFIGURAÇÃO ───────────────────────────────────────────────
-// Após publicar o Apps Script, cole a URL aqui:
-const BACKEND_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT';
-// ────────────────────────────────────────────────────────────────
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyGhlZOMDe37mISEYTtxUQQxiU7YDPzPo0rJv6GUpN8Gq1UasYpS7hb8Xi2CxKe9aI/exec';
 
 const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 function mesAno() { const d = new Date(); return MESES[d.getMonth()] + '/' + d.getFullYear(); }
@@ -206,11 +201,6 @@ function setStatus(msg, tipo) { const el = document.getElementById('status'); el
 function extrairId(url) { const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/); return m ? m[1] : null; }
 
 async function carregar() {
-  if (BACKEND_URL === 'COLE_AQUI_A_URL_DO_APPS_SCRIPT') {
-    setStatus('Configure o BACKEND_URL no código HTML antes de usar.', 'err');
-    return;
-  }
-
   const url = document.getElementById('sheet-url').value.trim();
   const id = extrairId(url);
   if (!id) { setStatus('Link inválido. Cole o link completo do Google Sheets.', 'err'); return; }
